@@ -2,6 +2,7 @@
 
 namespace TSCore\JsonRpcServerBundle\Method;
 
+use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Annotations\FileCacheReader;
 use TSCore\JsonRpcServerBundle\Exception\ActionNotFoundException;
 use TSCore\JsonRpcServerBundle\Exception\DublicateActionException;
@@ -10,14 +11,14 @@ use TSCore\JsonRpcServerBundle\Method\Annotation\Action;
 class MethodMapper
 {
     /**
-     * @var FileCacheReader
+     * @var CachedReader
     */
     private $annotationReader;
 
     /**
-     * @param FileCacheReader $annotationReader
+     * @param CachedReader $annotationReader
     */
-    public function __construct(FileCacheReader $annotationReader)
+    public function __construct(CachedReader $annotationReader)
     {
         $this->annotationReader = $annotationReader;
     }

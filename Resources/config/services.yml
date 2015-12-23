@@ -4,7 +4,7 @@ services:
 
     jsonrpcserver.method_mapper:
         class: TSCore\JsonRpcServerBundle\Method\MethodMapper
-        arguments: ["@annotation_reader"]
+        arguments: ["@annotations.cached_reader"]
 
     jsonrpcserver.dispatcher:
         class: TSCore\JsonRpcServerBundle\Server\Dispatcher
