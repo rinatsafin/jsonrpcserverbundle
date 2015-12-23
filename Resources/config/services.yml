@@ -4,13 +4,13 @@ services:
 
     jsonrpcserver.method_mapper:
         class: TSCore\JsonRpcServerBundle\Method\MethodMapper
-        arguments: [@annotation_reader]
+        arguments: ["@annotation_reader"]
 
     jsonrpcserver.dispatcher:
         class: TSCore\JsonRpcServerBundle\Server\Dispatcher
         arguments:
-            - @jsonrpcserver.method_mapper
-            - @jsonrpcserver.method_manager
+            - "@jsonrpcserver.method_mapper"
+            - "@jsonrpcserver.method_manager"
 
     jsonrpcserver.request_mapper:
         class: TSCore\JsonRpcServerBundle\Request\RequestMapper
@@ -24,9 +24,9 @@ services:
     jsonrpcserver.server:
         class: TSCore\JsonRpcServerBundle\Server\JsonRpcServer
         arguments:
-            - @jsonrpcserver.dispatcher
-            - @jsonrpcserver.json_parser
-            - @jsonrpcserver.request_mapper
-            - @jsonrpcserver.response_maker
-            - @?event_dispatcher
+            - "@jsonrpcserver.dispatcher"
+            - "@jsonrpcserver.json_parser"
+            - "@jsonrpcserver.request_mapper"
+            - "@jsonrpcserver.response_maker"
+            - "@?event_dispatcher"
 
