@@ -1,0 +1,30 @@
+{
+  "name" : "trscore/jsonrpcserverbundle",
+  "description" : "JsonRpcServerBundle",
+  "type" : "symfony-bundle",
+  "authors" : [{
+    "name" : "Igor Stokolos",
+    "email" : "igorstokolos@gmail.com"
+  }],
+  "keywords" : [
+    "jsonrpcserver"
+  ],
+  "license" : [
+    "MIT"
+  ],
+  "require" : {
+  },
+  "autoload" : {
+    "psr-0" : {
+      "TSCore\\JsonRpcServerBundle" : ""
+    }
+  },
+  "target-dir" : "TSCore/JsonRpcServerBundle",
+  "repositories" : [{
+  }],
+  "extra" : {
+    "branch-alias" : {
+      "dev-master" : "1.0-dev"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+services:
+    jsonrpcserver.method_manager:
+        class: TSCore\JsonRpcServerBundle\Method\MethodManager
+
+    jsonrpcserver.method_mapper:
+        class: TSCore\JsonRpcServerBundle\Method\MethodMapper
+        arguments: [@annotation_reader]
+
+    jsonrpcserver.dispatcher:
+        class: TSCore\JsonRpcServerBundle\Server\Dispatcher
+        arguments:
+            - @jsonrpcserver.method_mapper
+            - @jsonrpcserver.method_manager
+
+    jsonrpcserver.request_mapper:
+        class: TSCore\JsonRpcServerBundle\Request\RequestMapper
+
+    jsonrpcserver.json_parser:
+        class: TSCore\JsonRpcServerBundle\Parser\JsonParser
+
+    jsonrpcserver.response_maker:
+        class: TSCore\JsonRpcServerBundle\Response\ResponseMaker
+
+    jsonrpcserver.server:
+        class: TSCore\JsonRpcServerBundle\Server\JsonRpcServer
+        arguments:
+            - @jsonrpcserver.dispatcher
+            - @jsonrpcserver.json_parser
+            - @jsonrpcserver.request_mapper
+            - @jsonrpcserver.response_maker
+            - @?event_dispatcher
+
