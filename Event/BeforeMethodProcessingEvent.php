@@ -3,13 +3,13 @@
 namespace TSCore\JsonRpcServerBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
-use TSCore\JsonRpcServerBundle\Request\RpcRequest;
+use TSCore\JsonRpcServerBundle\Request\IRpcRequest;
 use TSCore\JsonRpcServerBundle\Server\PreDispatchResult;
 
 class BeforeMethodProcessingEvent extends Event
 {
     /**
-     * @var RpcRequest
+     * @var IRpcRequest
     */
     private $rpcRequest;
 
@@ -18,7 +18,7 @@ class BeforeMethodProcessingEvent extends Event
     */
     private $preDispatchResult;
 
-    public function __construct(RpcRequest $rpcRequest, PreDispatchResult $preDispatchResult)
+    public function __construct(IRpcRequest $rpcRequest, PreDispatchResult $preDispatchResult)
     {
         $this->rpcRequest = $rpcRequest;
         $this->preDispatchResult = $preDispatchResult;
@@ -30,7 +30,7 @@ class BeforeMethodProcessingEvent extends Event
     }
 
     /**
-     * @return RpcRequest
+     * @return IRpcRequest
     */
     public function getRpcRequest()
     {
@@ -38,9 +38,9 @@ class BeforeMethodProcessingEvent extends Event
     }
 
     /**
-     * @param RpcRequest $rpcRequest
+     * @param IRpcRequest $rpcRequest
     */
-    public function setRpcRequest(RpcRequest $rpcRequest)
+    public function setRpcRequest(IRpcRequest $rpcRequest)
     {
         $this->rpcRequest = $rpcRequest;
     }

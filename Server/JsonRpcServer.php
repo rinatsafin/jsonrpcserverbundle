@@ -9,8 +9,8 @@ use TSCore\JsonRpcServerBundle\Exception\InvalidResponeException;
 use TSCore\JsonRpcServerBundle\Parser\IParser;
 use TSCore\JsonRpcServerBundle\Request\Exception\InvalidParamException;
 use TSCore\JsonRpcServerBundle\Request\Exception\VersionNotSupportedException;
+use TSCore\JsonRpcServerBundle\Request\IRpcRequest;
 use TSCore\JsonRpcServerBundle\Request\RequestMapper;
-use TSCore\JsonRpcServerBundle\Request\RpcRequest;
 use TSCore\JsonRpcServerBundle\Response\ResponseMaker;
 use TSCore\JsonRpcServerBundle\Response\RpcResponse;
 
@@ -67,7 +67,7 @@ class JsonRpcServer
         if ($this->isBatch($dataAr)) {
             $results = [];
             foreach ($dataAr as $dataArItem) {
-                /** @var RpcRequest $rpcRequest */
+                /** @var IRpcRequest $rpcRequest */
                 $rpcRequest = $this->requestMapper->tryMappedArrayToRpcRequest($dataArItem);
 
                 $results[] = $this->handleRpcRequest($rpcRequest);
@@ -78,7 +78,7 @@ class JsonRpcServer
             return $responses;
 
         } else {
-            /** @var RpcRequest $rpcRequest */
+            /** @var IRpcRequest $rpcRequest */
             $rpcRequest = $this->requestMapper->tryMappedArrayToRpcRequest($dataAr);
             $result = $this->handleRpcRequest($rpcRequest);
 
@@ -87,10 +87,10 @@ class JsonRpcServer
     }
 
     /**
-     * @param RpcRequest $rpcRequest
+     * @param IRpcRequest $rpcRequest
      * @return RpcResponse
     */
-    private function handleRpcRequest(RpcRequest $rpcRequest)
+    private function handleRpcRequest(IRpcRequest $rpcRequest)
     {
         $this->validateRpcRequest($rpcRequest);
 
@@ -119,12 +119,12 @@ class JsonRpcServer
     }
 
     /**
-     * @param RpcRequest $rpcRequest
+     * @param IRpcRequest $rpcRequest
      * @return void
      * @throws VersionNotSupportedException
      * @throws InvalidParamException
     */
-    private function validateRpcRequest(RpcRequest $rpcRequest)
+    private function validateRpcRequest(IRpcRequest $rpcRequest)
     {
         if ($rpcRequest->getJsonRpcVersion() !== '2.0')
             throw new VersionNotSupportedException("JsonRpcServer support only 2.0 specification!");

@@ -5,7 +5,7 @@ namespace TSCore\JsonRpcServerBundle\Server;
 use TSCore\JsonRpcServerBundle\Method\IApiMethod;
 use TSCore\JsonRpcServerBundle\Method\MethodManager;
 use TSCore\JsonRpcServerBundle\Method\MethodMapper;
-use TSCore\JsonRpcServerBundle\Request\RpcRequest;
+use TSCore\JsonRpcServerBundle\Request\IRpcRequest;
 
 class Dispatcher implements IDispatcher
 {
@@ -49,12 +49,12 @@ class Dispatcher implements IDispatcher
         $methodObject = $this->methodManager->getMethodByName($methodName);
         $action = $this->methodMapper->getClassMethodNameByMethodAndActionName($methodObject, $actionName);
 
-        return function(RpcRequest $rpcRequest) use ($methodObject, $action) {
+        return function(IRpcRequest $rpcRequest) use ($methodObject, $action) {
             return $this->invoke($methodObject, $action, $rpcRequest);
         };
     }
 
-    private function invoke(IApiMethod $method, $actionName, RpcRequest $rpcRequest)
+    private function invoke(IApiMethod $method, $actionName, IRpcRequest $rpcRequest)
     {
         return $method->$actionName($rpcRequest);
     }

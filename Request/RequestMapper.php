@@ -8,7 +8,7 @@ class RequestMapper
 {
     /**
      * @param array() $requestArray
-     * @return RpcRequest
+     * @return IRpcRequest
      * @throws FieldMissingException
     */
     public function tryMappedArrayToRpcRequest($requestArray)

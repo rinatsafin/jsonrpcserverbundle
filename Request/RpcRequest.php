@@ -3,7 +3,7 @@
 namespace TSCore\JsonRpcServerBundle\Request;
 
 
-class RpcRequest
+class RpcRequest implements IRpcRequest
 {
     private $jsonRpcVersion;
 
