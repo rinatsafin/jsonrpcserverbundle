@@ -98,13 +98,16 @@ class JsonRpcServer
 
         $methodActionCallable = $this->dispatcher->dispatch($rpcRequest->getMethod(), $rpcRequest->getAction());
 
+        $rpcRequestUser = null;
         if (!is_null($this->eventDispatcher)) {
             /** @var BeforeMethodProcessingEvent $event */
             $event = $this->eventDispatcher->dispatch("jsonrpcserver.before_method_processing", new BeforeMethodProcessingEvent($rpcRequest, $preDispatchResult));
-            $rpcRequest = $event->getRpcRequest();
+            $rpcRequestUser = $event->getRpcRequest();
         }
+        if ($rpcRequestUser == null)
+            $rpcRequestUser = $rpcRequest;
 
-        $rpcResponse = call_user_func($methodActionCallable, $rpcRequest);
+        $rpcResponse = call_user_func($methodActionCallable, $rpcRequestUser);
 
         if (!is_null($this->eventDispatcher)) {
             /** @var AfterMethodProcessingEvent $event */
