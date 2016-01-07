@@ -29,18 +29,12 @@ class BeforeMethodProcessingEvent extends Event
         return $this->preDispatchResult;
     }
 
-    /**
-     * @return IRpcRequest
-    */
     public function getRpcRequest()
     {
         return $this->rpcRequest;
     }
 
-    /**
-     * @param IRpcRequest $rpcRequest
-    */
-    public function setRpcRequest(IRpcRequest $rpcRequest)
+    public function setRpcRequest($rpcRequest)
     {
         $this->rpcRequest = $rpcRequest;
     }

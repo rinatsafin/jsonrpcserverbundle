@@ -49,12 +49,12 @@ class Dispatcher implements IDispatcher
         $methodObject = $this->methodManager->getMethodByName($methodName);
         $action = $this->methodMapper->getClassMethodNameByMethodAndActionName($methodObject, $actionName);
 
-        return function(IRpcRequest $rpcRequest) use ($methodObject, $action) {
+        return function($rpcRequest) use ($methodObject, $action) {
             return $this->invoke($methodObject, $action, $rpcRequest);
         };
     }
 
-    private function invoke(IApiMethod $method, $actionName, IRpcRequest $rpcRequest)
+    private function invoke(IApiMethod $method, $actionName, $rpcRequest)
     {
         return $method->$actionName($rpcRequest);
     }
