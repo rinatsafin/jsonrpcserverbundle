@@ -94,9 +94,13 @@ class JsonRpcServer
         } else {
             /** @var IRpcRequest $rpcRequest */
             $rpcRequest = $this->requestMapper->tryMappedArrayToRpcRequest($dataAr);
-            $result = $this->handleRpcRequest($rpcRequest);
 
-            return $this->responseMaker->makeJsonResponseFromRpcResponse($result);
+            try {
+                $result = $this->handleRpcRequest($rpcRequest);
+                return $this->responseMaker->makeJsonResponseFromRpcResponse($result);
+            } catch (ApiException $ex) {
+                return $this->responseMaker->makeJsonResponseFromRpcErrorResponse($ex, $rpcRequest);
+            }
         }
     }
 
