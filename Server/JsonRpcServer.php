@@ -5,7 +5,9 @@ namespace TSCore\JsonRpcServerBundle\Server;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use TSCore\JsonRpcServerBundle\Event\AfterMethodProcessingEvent;
 use TSCore\JsonRpcServerBundle\Event\BeforeMethodProcessingEvent;
+use TSCore\JsonRpcServerBundle\Exception\ApiException;
 use TSCore\JsonRpcServerBundle\Exception\InvalidResponeException;
+use TSCore\JsonRpcServerBundle\Parser\Exception\ParseException;
 use TSCore\JsonRpcServerBundle\Parser\IParser;
 use TSCore\JsonRpcServerBundle\Request\Exception\InvalidParamException;
 use TSCore\JsonRpcServerBundle\Request\Exception\VersionNotSupportedException;
@@ -59,10 +61,15 @@ class JsonRpcServer
     /**
      * @param string $context
      * @return array()
+     * @throws ParseException
     */
     public function processing($context)
     {
-        $dataAr = $this->parser->parse($context);
+        try {
+            $dataAr = $this->parser->parse($context);
+        } catch (ParseException $ex) {
+            throw $ex;
+        }
 
         if ($this->isBatch($dataAr)) {
             $results = [];
@@ -70,7 +77,14 @@ class JsonRpcServer
                 /** @var IRpcRequest $rpcRequest */
                 $rpcRequest = $this->requestMapper->tryMappedArrayToRpcRequest($dataArItem);
 
-                $results[] = $this->handleRpcRequest($rpcRequest);
+                $result = null;
+                try {
+                    $result = $this->handleRpcRequest($rpcRequest);
+                } catch (ApiException $ex) {
+                    $result = $this->responseMaker->makeJsonResponseFromRpcErrorResponse($ex, $rpcRequest);
+                }
+
+                $results[] = $result;
             }
 
             $responses = $this->responseMaker->makeJsonBatchResponseFromRpcResponseArray($results);
@@ -89,6 +103,7 @@ class JsonRpcServer
     /**
      * @param IRpcRequest $rpcRequest
      * @return RpcResponse
+     * @throws InvalidResponeException
     */
     private function handleRpcRequest(IRpcRequest $rpcRequest)
     {

@@ -4,9 +4,25 @@ namespace TSCore\JsonRpcServerBundle\Response;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use TSCore\JsonRpcServerBundle\Exception\ApiException;
+use TSCore\JsonRpcServerBundle\Request\RpcRequest;
 
 class ResponseMaker
 {
+    public function makeJsonResponseFromRpcErrorResponse(ApiException $ex, RpcRequest $request = null)
+    {
+        $response = [
+            'jsonrpc' => $request == null ? "2.0" : $request->getJsonRpcVersion(),
+            'error' => [
+                'code' => $ex->getCode(),
+                'message' => $ex->getMessage()
+            ],
+            'id' => $request == null ? 'null' : $request->getId()
+        ];
+
+        return new JsonResponse($response);
+    }
+
     public function makeJsonResponseFromRpcResponse(RpcResponse $rpcResponse)
     {
         $response = [
